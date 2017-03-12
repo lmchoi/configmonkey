@@ -7,5 +7,5 @@
     (some->> line
              (re-matcher attribute-pattern)
              (re-find)
-            (second)
-            (read-string))))
+             (second)
+             (read-string))))
