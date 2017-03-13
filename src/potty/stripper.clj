@@ -3,6 +3,8 @@
   (:require [yaml.core :as yaml]
             [clojure.java.io :as io]))
 
+(declare select-attributes)
+
 (defn- read-yaml
   [filename]
   (->> filename
