@@ -1,7 +1,10 @@
 (ns potty.core
-  (:gen-class))
+  (:gen-class)
+  (:require [potty.required-attributes-finder :as finder]
+            [potty.stripper :as extractor]))
 
 (defn -main
   "I don't do a whole lot ... yet."
-  [& args]
-  (println "Hello, World!"))
+  [filename & args]
+  (prn  (-> (finder/find-attributes (str "resources/" filename ".erb"))
+            (extractor/extract-values (str "resources/" filename)))))
