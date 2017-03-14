@@ -1,16 +1,8 @@
 (ns potty.stripper
   (:refer-clojure :exclude [load])
-  (:require [yaml.core :as yaml]
-            [clojure.java.io :as io]))
+  (:require [potty.yaml-reader :as reader]))
 
 (declare select-attributes)
-
-(defn- read-yaml
-  [filename]
-  (->> filename
-       (io/resource)
-       (yaml/from-file)
-       (into {})))
 
 (defn- find-nested-attribute
   [data [top-level-fieldname required-children]]
@@ -41,6 +33,6 @@
 (defn strip
   [required-attributes config-file]
   (-> config-file
-      (read-yaml)
+      (reader/read-file)
       (select-attributes required-attributes)
       (clojure.walk/keywordize-keys)))
