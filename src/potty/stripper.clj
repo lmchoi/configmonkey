@@ -30,7 +30,7 @@
          (next attributes)))
       (with-meta ret (meta data)))))
 
-(defn strip
+(defn extract-values
   [required-attributes config-file]
   (-> config-file
       (reader/read-file)
