@@ -34,9 +34,17 @@
          (next entries)))
       ret)))
 
-(defn find-attributes
+(defn find-attributes-deprecated
   [filename]
   (let [criteria #(re-matches #".*<%=.*%>.*" %)]
     (-> filename
+        (reader/read-file-deprecated)
+        (select-keys criteria))))
+
+(defn find-attributes
+  [input-file]
+  (let [criteria #(re-matches #".*<%=.*%>.*" %)]
+    (-> input-file
         (reader/read-file)
         (select-keys criteria))))
+

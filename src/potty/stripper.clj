@@ -30,9 +30,17 @@
          (next attributes)))
       (with-meta ret (meta data)))))
 
+(defn extract-values-deprecated
+  [required-attributes config-file]
+  (-> config-file
+      (reader/read-file-deprecated)
+      (select-attributes required-attributes)
+      (clojure.walk/keywordize-keys)))
+
 (defn extract-values
   [required-attributes config-file]
   (-> config-file
       (reader/read-file)
       (select-attributes required-attributes)
       (clojure.walk/keywordize-keys)))
+

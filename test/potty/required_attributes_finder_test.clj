@@ -4,9 +4,9 @@
 
 (facts "about finding required attributes based on erb subs"
        (fact "top-level values"
-             (find-attributes "resources/simple-config.yml.erb")
+             (find-attributes-deprecated "resources/simple-config.yml.erb")
              => ["host", "port"])
 
        (fact "nested values"
-             (find-attributes "resources/sample-invoice.yml.erb")
+             (find-attributes-deprecated "resources/sample-invoice.yml.erb")
              => ["invoice", {"bill-to" ["given"]}, {"ship-to" ["given"]}]))
