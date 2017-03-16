@@ -7,7 +7,7 @@
   [[top-level-fieldname children] criteria]
   (let [blah (select-keys (into {} children) criteria)]
     (when (not (empty? blah))
-      {top-level-fieldname blah})))
+      [top-level-fieldname blah])))
 
 (defn- find-keys
   [entry criteria]
@@ -15,14 +15,14 @@
     (cond
       (and (string? value)
            (criteria value))
-      (key entry)
+      entry
 
       (coll? value)
       (find-nested-keys entry criteria))))
 
 (defn- select-keys
   [data criteria]
-  (loop [ret []
+  (loop [ret {}
          entries data]
     (if entries
       (let [entry (first entries)
@@ -34,9 +34,17 @@
          (next entries)))
       ret)))
 
-(defn find-attributes
+(defn find-attributes-deprecated
   [filename]
   (let [criteria #(re-matches #".*<%=.*%>.*" %)]
     (-> filename
+        (reader/read-file-deprecated)
+        (select-keys criteria))))
+
+(defn find-attributes
+  [input-file]
+  (let [criteria #(re-matches #".*<%=.*%>.*" %)]
+    (-> input-file
         (reader/read-file)
         (select-keys criteria))))
+
