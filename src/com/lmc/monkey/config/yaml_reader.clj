@@ -1,4 +1,4 @@
-(ns potty.yaml-reader
+(ns com.lmc.monkey.config.yaml-reader
   (:require [yaml.core :as yaml]
             [clojure.java.io :as io]))
 

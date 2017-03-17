@@ -1,6 +1,6 @@
-(ns potty.stripper
+(ns com.lmc.monkey.config.stripper
   (:refer-clojure :exclude [load])
-  (:require [potty.yaml-reader :as reader]))
+  (:require [com.lmc.monkey.config.yaml-reader :as reader]))
 
 (declare select-attributes)
 

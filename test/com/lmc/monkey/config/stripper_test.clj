@@ -1,7 +1,7 @@
-(ns potty.stripper-test
+(ns com.lmc.monkey.config.stripper-test
   (:use midje.sweet)
   (:require [clojure.test :refer :all]
-            [potty.stripper :refer :all]))
+            [com.lmc.monkey.config.stripper :refer :all]))
 
 (facts "about stripping values from file"
        (fact "top-level values"

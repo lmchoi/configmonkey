@@ -1,5 +1,5 @@
-(ns potty.required-attributes-finder
-  (:require [potty.yaml-reader :as reader]))
+(ns com.lmc.monkey.config.required-attributes-finder
+  (:require [com.lmc.monkey.config.yaml-reader :as reader]))
 
 (declare select-keys)
 

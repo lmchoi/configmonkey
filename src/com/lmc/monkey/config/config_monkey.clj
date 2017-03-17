@@ -1,7 +1,7 @@
-(ns potty.config-muncher
-  (:require [potty.stripper :as extractor]
+(ns com.lmc.monkey.config.config-monkey
+  (:require [com.lmc.monkey.config.stripper :as extractor]
             [clojure.java.io :as io]
-            [potty.required-attributes-finder :as finder]))
+            [com.lmc.monkey.config.required-attributes-finder :as finder]))
 
 (defn- read-files [input]
   (-> input
@@ -33,7 +33,7 @@
           (next input-files)))
       ret)))
 
-(defn munch [{:keys [input]}]
+(defn extract [{:keys [input]}]
   (let [input-files         (read-files input)
         required-attributes (process-template input-files)]
     {:template {:erb required-attributes}

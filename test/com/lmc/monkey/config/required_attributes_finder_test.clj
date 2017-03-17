@@ -1,6 +1,6 @@
-(ns potty.required-attributes-finder-test
+(ns com.lmc.monkey.config.required-attributes-finder-test
   (:use midje.sweet)
-  (:require  [potty.required-attributes-finder :refer :all]))
+  (:require  [com.lmc.monkey.config.required-attributes-finder :refer :all]))
 
 (facts "about finding required attributes based on erb subs"
        (fact "top-level values"
