@@ -7,7 +7,8 @@
              (let [all-entries {"host"    "<%= node['some']['host'] %>"
                                 "port"    "<%= node['some']['port'] %>"
                                 "useless" irrelevant}
-                   criteria    #(re-matches #".*<%=.*%>.*" %)]
+                   criteria    #(and (string? (val %))
+                                     (re-matches #".*<%=.*%>.*" (val %)))]
                (select-entries-by-criteria all-entries criteria)
                => {"host" "<%= node['some']['host'] %>"
                    "port" "<%= node['some']['port'] %>"}))
@@ -18,7 +19,8 @@
                                            "useless2" irrelevant}
                                 "ship-to" {"given" "<%= firstname %>"}
                                 "useless" irrelevant}
-                   criteria    #(re-matches #".*<%=.*%>.*" %)]
+                   criteria    #(and (string? (val %))
+                                     (re-matches #".*<%=.*%>.*" (val %)))]
                      (select-entries-by-criteria all-entries criteria)
                      => {"invoice" "<%= id %>"
                          "bill-to" {"given" "<%= firstname %>"}

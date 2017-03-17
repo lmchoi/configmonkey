@@ -32,7 +32,7 @@
                                                               "postal" anything}
                                                    "family"  anything}}
                    original-map        {"invoice" 34843
-                                        "bill-to" {"given"   anything
+                                        "bill-to" {"given"   irrelevant
                                                    "family"  "Dumars"
                                                    "address" {"city"   "Royal Oak"
                                                               "postal" 48046}}}]

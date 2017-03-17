@@ -18,7 +18,8 @@
   (first (map
            #(finder/select-entries-by-criteria
              (reader/read-file %)
-             (fn [a] (re-matches #".*<%=.*%>.*" a)))
+             (fn [x] (and (string? (val x))
+                   (re-matches #".*<%=.*%>.*" (val x)))))
            (filter is-template? input-files))))
 
 (defn- process-env-values [required-attributes input-file]
