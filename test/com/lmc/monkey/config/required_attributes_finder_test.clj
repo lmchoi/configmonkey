@@ -4,12 +4,22 @@
 
 (facts "about finding required attributes based on erb subs"
        (fact "top-level values"
-             (find-attributes-deprecated "resources/simple-config.yml.erb")
-             => {"host" "<%= node['some']['host'] %>"
-                 "port" "<%= node['some']['port'] %>"})
+             (let [all-entries {"host"    "<%= node['some']['host'] %>"
+                                "port"    "<%= node['some']['port'] %>"
+                                "useless" irrelevant}
+                   criteria    #(re-matches #".*<%=.*%>.*" %)]
+               (select-entries-by-criteria all-entries criteria)
+               => {"host" "<%= node['some']['host'] %>"
+                   "port" "<%= node['some']['port'] %>"}))
 
        (fact "nested values"
-             (find-attributes-deprecated "resources/sample-invoice.yml.erb")
-             => {"invoice" "<%= id %>"
-                 "bill-to" {"given" "<%= firstname %>"}
-                 "ship-to" {"given" "<%= firstname %>"}}))
+             (let [all-entries {"invoice" "<%= id %>"
+                                "bill-to" {"given" "<%= firstname %>"
+                                           "useless2" irrelevant}
+                                "ship-to" {"given" "<%= firstname %>"}
+                                "useless" irrelevant}
+                   criteria    #(re-matches #".*<%=.*%>.*" %)]
+                     (select-entries-by-criteria all-entries criteria)
+                     => {"invoice" "<%= id %>"
+                         "bill-to" {"given" "<%= firstname %>"}
+                         "ship-to" {"given" "<%= firstname %>"}})))

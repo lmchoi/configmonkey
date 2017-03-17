@@ -1,11 +1,10 @@
-(ns com.lmc.monkey.config.stripper
-  (:refer-clojure :exclude [load])
-  (:require [com.lmc.monkey.config.yaml-reader :as reader]))
+(ns com.lmc.monkey.config.selector
+  (:refer-clojure :exclude [load]))
 
 (declare select-attributes)
 
 (defn- find-nested-attribute
-  [data [top-level-fieldname required-children :as attr]]
+  [data [top-level-fieldname required-children]]
   (let [[fieldname nested-data] (find data top-level-fieldname)]
     (when nested-data
       [fieldname (select-attributes (into {} nested-data) required-children)])))
@@ -30,17 +29,9 @@
          (next attributes)))
       (with-meta ret (meta data)))))
 
-(defn extract-values-deprecated
-  [required-attributes config-file]
-  (-> config-file
-      (reader/read-file-deprecated)
+(defn select-entries
+  [all-entries required-attributes]
+  (-> all-entries
       (select-attributes required-attributes)
-      (clojure.walk/keywordize-keys)))
-
-(defn extract-values
-  [required-attributes config-file]
-  (-> config-file
-      (reader/read-file)
-      (select-attributes required-attributes)
-      (clojure.walk/keywordize-keys)))
+      clojure.walk/keywordize-keys))
 
