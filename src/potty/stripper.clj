@@ -5,15 +5,15 @@
 (declare select-attributes)
 
 (defn- find-nested-attribute
-  [data [top-level-fieldname required-children]]
+  [data [top-level-fieldname required-children :as attr]]
   (let [[fieldname nested-data] (find data top-level-fieldname)]
     (when nested-data
       [fieldname (select-attributes (into {} nested-data) required-children)])))
 
 (defn- find-attribute
-  [data fieldname]
-  (if (coll? fieldname)
-    (find-nested-attribute data (first fieldname)) ; should only have one entry!
+  [data [fieldname value :as attr]]
+  (if (coll? value)
+    (find-nested-attribute data attr)
     (find data fieldname)))
 
 (defn- select-attributes

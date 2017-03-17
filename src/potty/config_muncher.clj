@@ -36,5 +36,5 @@
 (defn munch [{:keys [input]}]
   (let [input-files         (read-files input)
         required-attributes (process-template input-files)]
-    {:template {:erb required-attributes
-     :values   (process-values required-attributes input-files)}}))
+    {:template {:erb required-attributes}
+     :values   (process-values required-attributes input-files)}))

@@ -6,6 +6,9 @@
        (fact "munch template and values"
              (muncher/munch {:input  "munchy_input"
                              :output "munchy_out"})
-             => {:template {:erb {}}
-                 :values   {:dev {}
-                            :qa  {}}}))
+             => {:template {:erb {"host" "<%= node['local']['host'] %>",
+                                  "port" "<%= node['local']['port'] %>"}}
+                 :values   {:dev {:host "munchy.dev"
+                                  :port 1337}
+                            :qa  {:host "munchy.qa"
+                                  :port 9001}}}))
