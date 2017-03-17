@@ -25,7 +25,7 @@
   (let [env (second (re-matches #".*-(.+)\.yml" (.getName input-file)))]
     (when env
       {(keyword env)
-       (extractor/select-entries (reader/read-file input-file) required-attributes)})))
+       (clojure.walk/keywordize-keys (extractor/select-entries (reader/read-file input-file) required-attributes))})))
 
 (defn- process-values [required-attributes in-files]
   (loop [ret {}

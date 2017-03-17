@@ -1,5 +1,4 @@
-(ns com.lmc.monkey.config.required-attributes-finder
-  (:require [com.lmc.monkey.config.yaml-reader :as reader]))
+(ns com.lmc.monkey.config.required-attributes-finder)
 
 (declare select-attributes)
 
@@ -32,7 +31,7 @@
            (conj ret k)
            ret)
          (next entries)))
-      ret)))
+      (with-meta ret (meta data)))))
 
 (defn select-entries-by-criteria
   [all-entries criteria]

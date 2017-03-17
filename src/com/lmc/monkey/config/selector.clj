@@ -1,5 +1,4 @@
-(ns com.lmc.monkey.config.selector
-  (:refer-clojure :exclude [load]))
+(ns com.lmc.monkey.config.selector)
 
 (declare select-attributes)
 
@@ -32,6 +31,5 @@
 (defn select-entries
   [all-entries required-attributes]
   (-> all-entries
-      (select-attributes required-attributes)
-      clojure.walk/keywordize-keys))
+      (select-attributes required-attributes)))
 

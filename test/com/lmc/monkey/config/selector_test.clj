@@ -10,8 +10,8 @@
                (selector/select-entries {"host"            "localhost"
                                          "port"            1337
                                          "some-other-data" irrelevant} required-attributes)
-               => {:host "localhost"
-                   :port 1337}))
+               => {"host" "localhost"
+                   "port" 1337}))
 
        (fact "nested values"
              (let [required-attributes {"invoice" anything
@@ -19,25 +19,26 @@
                                                    "family" anything}}
                    original-map        {"invoice" 34843
                                         "bill-to" {"given"  "Chris"
-                                                   "family" "Dumars"}}]
+                                                   "family" "Dumars"}
+                                        "some-other-data" irrelevant}]
                (selector/select-entries original-map required-attributes)
-               => {:invoice 34843
-                   :bill-to {:given  "Chris"
-                             :family "Dumars"}}))
+               => {"invoice"  34843
+                   "bill-to" {"given"  "Chris"
+                              "family" "Dumars"}}))
 
        (fact "multi level nested values"
              (let [required-attributes {"invoice" anything
-                                        "bill-to" {"given"   anything
-                                                   "address" {"city"   anything
+                                        "bill-to" {"address" {"city"   anything
                                                               "postal" anything}
                                                    "family"  anything}}
                    original-map        {"invoice" 34843
-                                        "bill-to" {"family"  "Dumars"
+                                        "bill-to" {"given"   anything
+                                                   "family"  "Dumars"
                                                    "address" {"city"   "Royal Oak"
                                                               "postal" 48046}}}]
                (selector/select-entries original-map required-attributes)
-               => {:invoice 34843
-                   :bill-to {:family  "Dumars"
-                             :address {:city   "Royal Oak"
-                                       :postal 48046}}})))
+               => {"invoice" 34843
+                   "bill-to" {"family"  "Dumars"
+                              "address" {"city"   "Royal Oak"
+                                         "postal" 48046}}})))
 
