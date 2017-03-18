@@ -62,9 +62,18 @@
                                          "postal" 48046}}})))
 
 (facts "aboout munching configs"
+       #_(fact "munch template and values"
+             (monkey/munch {:input  "munchy_input"
+                            :output "munchy_out"})
+             => {:dev {"override['local']['host']" "munchy.dev"
+                       "override['local']['port']" "1337"}
+                 :qa  {"override['local']['host']" "munchy.qa"
+                       "override['local']['port']" "9001"}})
+
+
        (fact "munch template and values"
-             (monkey/extract {:input  "munchy_input"
-                             :output "munchy_out"})
+             (monkey/extract {:input "munchy_input"
+                              :output "munchy_out"})
              => {:template {:erb {"host" "<%= node['local']['host'] %>",
                                   "port" "<%= node['local']['port'] %>"}}
                  :values   {:dev {:host "munchy.dev"

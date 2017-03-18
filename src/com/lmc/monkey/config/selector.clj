@@ -24,17 +24,7 @@
 
 (defn select-attributes
   [func data & args]
-  (loop [ret {}
-         entries data]
-    (if entries
-      (let [entry (first entries)
-            criteria-met (func entry args)]
-        (recur
-         (if criteria-met
-           (conj ret criteria-met)
-           ret)
-         (next entries)))
-      (with-meta ret (meta data)))))
+  (into {} (keep #(func % args) data)))
 
 (defn by-criteria
   [all-entries criteria children-criteria]
