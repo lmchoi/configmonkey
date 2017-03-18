@@ -3,29 +3,30 @@
 (declare select-attributes)
 
 (defn- find-nested-attributes
-  [[top-level-fieldname children] criteria]
+  [[top-level-fieldname children :as entry] criteria children-criteria]
   (let [children-attributes (select-attributes
                              (into {} children)
-                             (get criteria top-level-fieldname))]
+                             (children-criteria entry criteria)
+                             children-criteria)]
     (when (not (empty? children-attributes))
       [top-level-fieldname children-attributes])))
 
 (defn- find-attributes
-  [[fieldname value :as entry] criteria]
+  [[_ value :as entry] criteria children-criteria]
   (cond
     (coll? value)
-    (find-nested-attributes entry criteria)
+    (find-nested-attributes entry criteria children-criteria)
 
-    (get criteria fieldname)
+    (criteria entry)
     entry))
 
 (defn- select-attributes
-  [data criteria]
+  [data criteria children-criteria]
   (loop [ret {}
          entries data]
     (if entries
       (let [entry (first entries)
-            criteria-met (find-attributes entry criteria)]
+            criteria-met (find-attributes entry criteria children-criteria)]
         (recur
          (if criteria-met
            (conj ret criteria-met)
@@ -33,6 +34,6 @@
          (next entries)))
       (with-meta ret (meta data)))))
 
-(defn select-entries
-  [all-entries criteria]
-  (select-attributes all-entries criteria))
+(defn by-criteria
+  [all-entries criteria children-criteria]
+  (select-attributes all-entries criteria children-criteria))
