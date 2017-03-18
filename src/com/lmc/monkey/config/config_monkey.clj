@@ -39,7 +39,7 @@
            (filter is-template? input-files))))
 
 (defn- process-env-values
-  [input-file required-attributes]
+  [input-file [required-attributes]]
   (let [env (second (re-matches #".*-(.+)\.yml" (.getName input-file)))]
     (when env
       {(keyword env)
@@ -48,21 +48,8 @@
            (select-entries-by-name required-attributes)
            clojure.walk/keywordize-keys)})))
 
-(defn- process-values [input-files required-attributes]
-  (loop [ret {}
-         entries input-files]
-    (if entries
-      (let [entry (first entries)
-            criteria-met (process-env-values entry required-attributes)]
-        (recur
-          (if criteria-met
-            (conj ret criteria-met)
-            ret)
-          (next entries)))
-      ret)))
-
 (defn extract [{:keys [input]}]
   (let [input-files         (read-files input)
         required-attributes (process-template input-files)]
     {:template {:erb required-attributes}
-     :values   (process-values input-files required-attributes)}))
+     :values   (selector/select-attributes process-env-values input-files required-attributes)}))
