@@ -1,13 +1,14 @@
 (ns com.lmc.monkey.config.config-monkey-test
   (:use midje.sweet)
-  (:require [com.lmc.monkey.config.config-monkey :as monkey]))
+  (:require [com.lmc.monkey.config.config-monkey :as monkey]
+            [com.lmc.monkey.config.template-reader :as template]))
 
 (facts "about finding required attributes based on erb subs"
        (fact "top-level values"
              (let [all-entries {"host"    "<%= node['some']['host'] %>"
                                 "port"    "<%= node['some']['port'] %>"
                                 "useless" irrelevant}]
-               (monkey/select-entries-with-erb-placeholders all-entries)
+               (template/select-entries-with-erb-placeholders all-entries)
                => {"host" "<%= node['some']['host'] %>"
                    "port" "<%= node['some']['port'] %>"}))
 
@@ -17,10 +18,10 @@
                                            "useless2" irrelevant}
                                 "ship-to" {"given" "<%= firstname %>"}
                                 "useless" irrelevant}]
-                     (monkey/select-entries-with-erb-placeholders all-entries)
-                     => {"invoice" "<%= id %>"
-                         "bill-to" {"given" "<%= firstname %>"}
-                         "ship-to" {"given" "<%= firstname %>"}})))
+               (template/select-entries-with-erb-placeholders all-entries)
+               => {"invoice" "<%= id %>"
+                   "bill-to" {"given" "<%= firstname %>"}
+                   "ship-to" {"given" "<%= firstname %>"}})))
 
 (facts "select from map"
        (fact "top-level values"
@@ -62,7 +63,7 @@
                                          "postal" 48046}}})))
 
 (facts "aboout munching configs"
-       #_(fact "munch template and values"
+       (fact "munch template and values"
              (monkey/munch {:input  "munchy_input"
                             :output "munchy_out"})
              => {:dev {"override['local']['host']" "munchy.dev"
@@ -70,12 +71,11 @@
                  :qa  {"override['local']['host']" "munchy.qa"
                        "override['local']['port']" "9001"}})
 
-
        (fact "munch template and values"
-             (monkey/extract {:input "munchy_input"
+             (monkey/extract {:input  "munchy_input"
                               :output "munchy_out"})
-             => {:template {:erb {"host" "<%= node['local']['host'] %>",
-                                  "port" "<%= node['local']['port'] %>"}}
+             => {:template {:erb {:host "<%= node['local']['host'] %>",
+                                  :port "<%= node['local']['port'] %>"}}
                  :values   {:dev {:host "munchy.dev"
                                   :port 1337}
                             :qa  {:host "munchy.qa"

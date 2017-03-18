@@ -5,5 +5,6 @@
   [input-file]
   (->> input-file
        (yaml/from-file)
-       (into {})))
+       (into {})
+       (clojure.walk/keywordize-keys)))
 
