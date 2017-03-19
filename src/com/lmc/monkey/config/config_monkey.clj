@@ -2,7 +2,9 @@
   (:require [clojure.java.io :as io]
             [com.lmc.monkey.config.selector :as selector]
             [com.lmc.monkey.config.yaml-reader :as reader]
-            [com.lmc.monkey.config.template-reader :as template]))
+            [com.lmc.monkey.config.template-reader :as template]
+            [com.lmc.monkey.config.chef-recipe-generator :as chef]
+            ))
 
 (defn- read-files [input]
   (-> input
@@ -41,4 +43,4 @@
 
 (defn munch
   [config]
-  (extract config))
+  (chef/generate-attributes (extract config)))

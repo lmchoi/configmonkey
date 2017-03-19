@@ -62,16 +62,16 @@
                               "address" {"city"   "Royal Oak"
                                          "postal" 48046}}})))
 
-(facts "aboout munching configs"
-       (fact "munch template and values"
+(facts "about munching configs"
+       (fact "munch configs"
              (monkey/munch {:input  "munchy_input"
                             :output "munchy_out"})
              => {:dev {"override['local']['host']" "munchy.dev"
-                       "override['local']['port']" "1337"}
+                       "override['local']['port']" 1337}
                  :qa  {"override['local']['host']" "munchy.qa"
-                       "override['local']['port']" "9001"}})
+                       "override['local']['port']" 9001}})
 
-       (fact "munch template and values"
+       (fact "extract template and values"
              (monkey/extract {:input  "munchy_input"
                               :output "munchy_out"})
              => {:template {:erb {:host "<%= node['local']['host'] %>",
